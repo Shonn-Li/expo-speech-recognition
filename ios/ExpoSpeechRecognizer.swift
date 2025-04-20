@@ -275,7 +275,26 @@ actor ExpoSpeechRecognizer: ObservableObject {
       }
     )
   }
+  func pauseRecognition() {
+    // Just stop the audio engine without removing taps or closing the file
+    audioEngine?.pause()
+    stoppedListening = true
+  }
 
+  func resumeRecognition() {
+    // Make sure we have a valid audio engine
+    guard let audioEngine = audioEngine else { return }
+    
+    // Only try to resume if we're not already running
+    if !audioEngine.isRunning {
+      do {
+        try audioEngine.start()
+        stoppedListening = false
+      } catch {
+        print("Failed to resume audio engine: \(error.localizedDescription)")
+      }
+    }
+  }
   private func prepareFileRecognition(request: SFSpeechRecognitionRequest, url: URL) throws {
     self.audioEngine = nil
 

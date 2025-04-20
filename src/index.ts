@@ -2,9 +2,9 @@ import { ExpoSpeechRecognitionModule } from "./ExpoSpeechRecognitionModule";
 
 // Export the SpeechRecognition APIs
 export {
-  ExpoWebSpeechRecognition,
   ExpoWebSpeechGrammar,
   ExpoWebSpeechGrammarList,
+  ExpoWebSpeechRecognition,
 } from "./ExpoWebSpeechRecognition";
 
 // Native module
@@ -15,14 +15,32 @@ export { useSpeechRecognitionEvent } from "./useSpeechRecognitionEvent";
 
 // Constants
 export {
+  AudioEncodingAndroid,
   AVAudioSessionCategory,
   AVAudioSessionCategoryOptions,
   AVAudioSessionMode,
-  RecognizerIntentExtraLanguageModel,
   RecognizerIntentEnableLanguageSwitch,
-  AudioEncodingAndroid,
+  RecognizerIntentExtraLanguageModel,
   TaskHintIOS,
 } from "./constants";
+export type {
+  AndroidIntentOptions,
+  AudioEncodingAndroidValue,
+  AudioSourceOptions,
+  AVAudioSessionCategoryOptionsValue,
+  AVAudioSessionCategoryValue,
+  AVAudioSessionModeValue,
+  ExpoSpeechRecognitionErrorCode,
+  ExpoSpeechRecognitionErrorEvent,
+  ExpoSpeechRecognitionNativeEventMap,
+  ExpoSpeechRecognitionOptions,
+  ExpoSpeechRecognitionResult,
+  ExpoSpeechRecognitionResultEvent,
+  ExpoSpeechRecognitionResultSegment,
+  IOSTaskHintValue,
+  RecordingOptions,
+  SetCategoryOptions,
+} from "./ExpoSpeechRecognitionModule.types";
 
 export const getSupportedLocales = (options?: {
   androidRecognitionServicePackage?: string;
@@ -59,21 +77,6 @@ export const getAssistantService =
 export const addSpeechRecognitionListener =
   ExpoSpeechRecognitionModule.addListener;
 
-export type {
-  ExpoSpeechRecognitionOptions,
-  AndroidIntentOptions,
-  ExpoSpeechRecognitionNativeEventMap,
-  AVAudioSessionCategoryOptionsValue,
-  AVAudioSessionModeValue,
-  AVAudioSessionCategoryValue,
-  AudioEncodingAndroidValue,
-  AudioSourceOptions,
-  RecordingOptions,
-  IOSTaskHintValue,
-  SetCategoryOptions,
-  ExpoSpeechRecognitionErrorCode,
-  ExpoSpeechRecognitionErrorEvent,
-  ExpoSpeechRecognitionResultEvent,
-  ExpoSpeechRecognitionResult,
-  ExpoSpeechRecognitionResultSegment,
-} from "./ExpoSpeechRecognitionModule.types";
+export const pauseSpeechRecognition = () => ExpoSpeechRecognitionModule.pause();
+export const resumeSpeechRecognition = () =>
+  ExpoSpeechRecognitionModule.resume();

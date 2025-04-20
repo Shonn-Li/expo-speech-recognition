@@ -169,7 +169,29 @@ public class ExpoSpeechRecognitionModule: Module {
         promise.resolve(state ?? "inactive")
       }
     }
-
+  
+    AsyncFunction("pause") { (promise: Promise) in
+      Task {
+        do {
+          try await self.pauseRecognition()
+          promise.resolve(nil)
+        } catch {
+          promise.reject("ERR_SPEECH_RECOGNITION", "Failed to pause speech recognition: \(error.localizedDescription)")
+        }
+      }
+    }
+    
+    AsyncFunction("resume") { (promise: Promise) in
+      Task {
+        do {
+          try await self.resumeRecognition()
+          promise.resolve(nil)
+        } catch {
+          promise.reject("ERR_SPEECH_RECOGNITION", "Failed to resume speech recognition: \(error.localizedDescription)")
+        }
+      }
+    }
+  
     /** Start recognition with args: lang, interimResults, maxAlternatives */
     Function("start") { (options: SpeechRecognitionOptions) in
       Task {
@@ -595,5 +617,23 @@ public class ExpoSpeechRecognitionModule: Module {
     if errorCode != 301 {
       sendEvent("error", ["error": "audio-capture", "message": error.localizedDescription])
     }
+  }
+
+  private func pauseRecognition() async throws {
+    guard let recognizer = speechRecognizer else {
+      throw RecognizerError.nilRecognizer
+    }
+    
+    await recognizer.pauseRecognition()
+    self.sendEvent("pause", [:])
+  }
+
+  private func resumeRecognition() async throws {
+    guard let recognizer = speechRecognizer else {
+      throw RecognizerError.nilRecognizer
+    }
+    
+    await recognizer.resumeRecognition()
+    self.sendEvent("resume", [:])
   }
 }

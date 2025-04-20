@@ -1,5 +1,5 @@
-import type { PermissionResponse } from "expo-modules-core";
 import type { NativeModule } from "expo";
+import type { PermissionResponse } from "expo-modules-core";
 
 import type {
   AudioEncodingAndroid,
@@ -556,6 +556,17 @@ export declare class ExpoSpeechRecognitionModuleType extends NativeModule<ExpoSp
    * Stops speech recognition and attempts to return a final result (through the `result` event).
    */
   stop(): void;
+  /**
+   * Pauses the ongoing speech recognition.
+   * The audio engine will stop capturing new audio, but the session will remain active.
+   * Call resume() to continue capturing audio without creating a new session.
+   */
+  pause(): Promise<void>;
+  /**
+   * Resumes a paused speech recognition session.
+   * This restarts audio capture using the existing session.
+   */
+  resume(): Promise<void>;
   /**
    * Cancels speech recognition immediately without returning a final result.
    */
